@@ -1,12 +1,12 @@
-import { User } from "../../enteties/user.enteties";
+import { Users } from "../../enteties/user.enteties";
 import {Field, ObjectType} from "type-graphql";
 
 @ObjectType()
 export class FieldError {
-  @Field()
+  @Field(()=>String)
   field: string;
 
-  @Field()
+  @Field(()=>String)
   message: string;
 }
 
@@ -15,6 +15,6 @@ export class UserResponse {
   @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
 
-  @Field(() => User, { nullable: true })
-  user?: User;
+  @Field(() => Users, { nullable: true })
+  user?: Users;
 }

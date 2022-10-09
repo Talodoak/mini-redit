@@ -8,39 +8,39 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { User } from './user.enteties';
+import { Users } from './user.enteties';
 import { Updoot } from './updoot.enteties';
 import { Field, Int, ObjectType } from 'type-graphql';
 
 @ObjectType()
 @Entity()
 export class Post extends BaseEntity {
-  @Field()
+  @Field(()=>Int)
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Field()
+  @Field(()=>String)
   @Column()
   title!: string;
 
-  @Field()
+  @Field(()=>String)
   @Column()
   text!: string;
 
-  @Field()
+  @Field(()=>Int)
   @Column({ type: 'int', default: 0 })
   points!: number;
 
   @Field(() => Int, { nullable: true })
   voteStatus: number | null; // 1 or -1 or null
 
-  @Field()
+  @Field(()=>Int)
   @Column()
   creatorId: number;
 
-  @Field()
-  @ManyToOne(() => User, (user) => user.posts)
-  creator: User;
+  @Field(()=>Users)
+  @ManyToOne(() => Users, (user) => user.posts)
+  creator: Users;
 
   @OneToMany(() => Updoot, (updoot) => updoot.post)
   updoots: Updoot[];

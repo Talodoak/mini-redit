@@ -2,7 +2,7 @@ import { Repository } from 'typeorm';
 import { Post } from '../../enteties';
 
 class PostRepository extends Repository<Post> {
-  async updateVotedPost(realValue, postId, userId) {
+  async updateVotedPost(realValue: number, postId: number, userId: number) {
     return await pq.transaction(async (tm) => {
       await tm.query(
         `
@@ -24,7 +24,7 @@ class PostRepository extends Repository<Post> {
     });
   }
 
-  async updateUnvotedPost(realValue, postId, userId) {
+  async updateUnvotedPost(realValue: number, postId: number, userId: number) {
     return await pq.transaction(async (tm) => {
       await tm.query(
         `
@@ -45,31 +45,31 @@ class PostRepository extends Repository<Post> {
     });
   }
 
-  async getPost(cursor, replacements) {
+  async getPost(cursor: string | null, replacements: any[]) {
     return await Post.query(
       `
     select p.*
     from post p
     ${cursor ? `where p."createdAt" < $2` : ''}
-    order by p."createdAt" DESC
+    order by p."created_at" DESC
     limit $1
     `,
       replacements,
     );
   }
 
-  async getPostById(id) {
-    return Post.findOne(id);
-  }
+  // async getPostById(id: number) {
+  //   return Post.findOne(id);
+  // }
 
-  async createPost(input, userId) {
+  async createPost(input: any, userId: any) {
     return Post.create({
       ...input,
       creatorId: userId,
     });
   }
 
-  async updatePost(title, text, userId, id) {
+  async updatePost(title: string, text: string, userId: number, id: number) {
     const result = await pq
       .createQueryBuilder()
       .update(Post)
@@ -84,7 +84,7 @@ class PostRepository extends Repository<Post> {
     return result.raw[0];
   }
 
-  async deletePost(id, userId) {
+  async deletePost(id: number, userId: number) {
     return await Post.delete({ id, creatorId: userId });
   }
 }

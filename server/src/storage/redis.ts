@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { createClient } from 'redis';
+import { createClient, RedisClientType } from "redis";
 import { Connections } from '../interfaces';
 
 const logInfo = debug('RedisDb:info:::');
@@ -7,7 +7,7 @@ const logError = debug('RedisDb:error:::');
 
 class RedisDb {
   private static get config(): Connections.RedisConnection {
-    const mode = process.env.NODE_ENV;
+    const mode = String(process.env.NODE_ENV);
     return {
       host:
         mode === 'production'
@@ -42,7 +42,7 @@ class RedisDb {
       await client.SELECT(Number(databaseNumber));
 
       logInfo(`REDIS SERVER CONNECT. DB SELECTED: ${Number(databaseNumber)}`);
-      global.redis = client;
+      global.redis = client as RedisClientType;
     } catch (e) {
       logError('REDIS SERVER ERROR %s', e);
     }

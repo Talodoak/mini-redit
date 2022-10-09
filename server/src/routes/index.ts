@@ -2,15 +2,15 @@ import express, {Router} from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import Redis from "ioredis";
 import session from 'express-session';
-import connectRedis from "connect-redis";
 import V1 from "./v1";
+import { ApolloServer, ExpressContext } from 'apollo-server-express';
 import {COOKIE_NAME} from "../configs/additionals";
+import Redis from "ioredis";
+import connectRedis from 'connect-redis';
 
-const expressRouter = Router();
 const RedisStore = connectRedis(session);
-const redis = new Redis('127.0.0.1:6379');
+const redisClient = new Redis('127.0.0.1:6379');
 
 export default class InitRouter {
   app: express.Application;
@@ -18,7 +18,7 @@ export default class InitRouter {
   globalRouter: express.Router;
   MODE: string;
 
-  constructor(app: express.Application, MODE: string, apolloServer) {
+  constructor(app: express.Application, MODE: string, apolloServer: ApolloServer<ExpressContext>) {
     this.app = app;
     this.globalRouter = Router();
     this.MODE = MODE;
@@ -51,7 +51,7 @@ export default class InitRouter {
     this.app.use(session({
       name: COOKIE_NAME,
       store: new RedisStore({
-        client: redis,
+        client: redisClient,
         disableTouch: true,
         disableTTL: true
       }),
@@ -62,7 +62,7 @@ export default class InitRouter {
          sameSite: 'lax', //csrf
       },
       saveUninitialized: false,
-      secret: 'keyboard cat',
+      secret: process.env.SESSION_SECRET,
       resave: false
     }));
     this.apolloServer.applyMiddleware({app: this.app, cors: false});

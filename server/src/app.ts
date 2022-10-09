@@ -33,7 +33,7 @@ class App {
 
   private server: Server;
 
-  private apolloServer;
+  private apolloServer: ApolloServer<import("apollo-server-express").ExpressContext>;
 
   constructor() {
     this.PORT = AppMainConfig.APP_PORT;
@@ -61,20 +61,25 @@ class App {
   }
 
   private async listenGraphQL() {
-    this.apolloServer = new ApolloServer({
-      schema: await buildSchema({
-        resolvers: [PostResolver, UserResolver],
-        validate: false,
-      }),
-      context: ({ req, res }): MyContext => ({
-        req,
-        res,
-        redis: Redis,
-        userLoader: Loaders.userLoader(),
-        updootLoader: Loaders.updootLoader(),
-      }),
-    });
-    await this.apolloServer.start();
+    try {
+      this.apolloServer = new ApolloServer({
+        schema: await buildSchema({
+          resolvers: [PostResolver, UserResolver],
+          validate: false,
+        }),
+        context: ({ req, res }): MyContext => ({
+          req,
+          res,
+          redis: Redis,
+          userLoader: Loaders.userLoader(),
+          updootLoader: Loaders.updootLoader(),
+        }),
+      });
+      await this.apolloServer.start();
+      logInfo(`GraphQL server started`);
+    } catch (e) {
+      logError(`GraphQL server not started`, e);
+    }
   }
 
   private async listen() {

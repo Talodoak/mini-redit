@@ -1,5 +1,5 @@
 import DataLoader from 'dataloader';
-import { Updoot, User } from '../enteties';
+import { Updoot, Users } from '../enteties';
 
 class Loaders {
   updootLoader() {
@@ -19,9 +19,9 @@ class Loaders {
   }
 
   userLoader() {
-    return new DataLoader<number, User>(async (userIds) => {
-      const users = await User.findByIds(userIds as number[]);
-      const userIdToUser: Record<number, User> = {};
+    return new DataLoader<number, Users>(async (userIds) => {
+      const users = await Users.findByIds(userIds as number[]);
+      const userIdToUser: Record<number, Users> = {};
       users.forEach((u) => {
         userIdToUser[u.id] = u;
       });

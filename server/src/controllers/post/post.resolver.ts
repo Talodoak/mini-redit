@@ -1,4 +1,4 @@
-import { Updoot, Post, User } from '../../enteties';
+import { Updoot, Post, Users } from '../../enteties';
 import { isAuth } from '../../middlewares';
 import { MyContext } from '../../interfaces';
 import { PaginatedPosts } from '../updoot/updoot.dto';
@@ -23,7 +23,7 @@ export class PostResolver {
     return post.text.slice(0, 50);
   }
 
-  @FieldResolver(() => User)
+  @FieldResolver(() => Users)
   creator(@Root() post: Post, @Ctx() { userLoader }: MyContext) {
     return userLoader.load(post.creatorId);
   }
@@ -61,10 +61,10 @@ export class PostResolver {
     // the user has voted on the post before
     // and they are changing their vote
     if (updoot && updoot.value !== realValue) {
-      await PostRepository.updateUnvotedPost(realValue, postId, userId);
+      await PostRepository.updateUnvotedPost(realValue, postId, Number(userId));
     } else if (!updoot) {
       // has never voted before
-      await PostRepository.updateVotedPost(realValue, postId, userId);
+      await PostRepository.updateVotedPost(realValue, postId, Number(userId));
     }
   }
 
@@ -94,8 +94,8 @@ export class PostResolver {
     return Post.findOne(id);
   }
 
-  @Mutation(() => Post)
-  // @UseMiddleware(isAuth)
+  @Mutation(() => Post, {nullable: true})
+  @UseMiddleware(isAuth)
   async createPost(
     @Arg('input') input: PostInput,
     @Ctx() { req }: MyContext,
@@ -114,7 +114,7 @@ export class PostResolver {
     @Arg('text') text: string,
     @Ctx() { req }: MyContext,
   ): Promise<Post | null> {
-    return PostRepository.updatePost(title, text, req.session.userId, id);
+    return PostRepository.updatePost(title, text, Number(req.session.userId), id);
   }
 
   @Mutation(() => Boolean)
@@ -123,7 +123,7 @@ export class PostResolver {
     @Arg('id', () => Int) id: number,
     @Ctx() { req }: MyContext,
   ): Promise<boolean> {
-    const result = await PostRepository.deletePost(id, req.session.userId);
+    const result = await PostRepository.deletePost(id, Number(req.session.userId));
     return true;
   }
 }

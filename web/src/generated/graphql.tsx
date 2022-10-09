@@ -13,10 +13,9 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  hello: Scalars['String'];
   posts: PaginatedPosts;
   post?: Maybe<Post>;
-  me?: Maybe<User>;
+  me?: Maybe<Users>;
 };
 
 
@@ -38,20 +37,20 @@ export type PaginatedPosts = {
 
 export type Post = {
   __typename?: 'Post';
-  id: Scalars['Float'];
+  id: Scalars['Int'];
   title: Scalars['String'];
   text: Scalars['String'];
-  points: Scalars['Float'];
+  points: Scalars['Int'];
   voteStatus?: Maybe<Scalars['Int']>;
-  creatorId: Scalars['Float'];
-  creator: User;
+  creatorId: Scalars['Int'];
+  creator: Users;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   textSnippet: Scalars['String'];
 };
 
-export type User = {
-  __typename?: 'User';
+export type Users = {
+  __typename?: 'Users';
   id: Scalars['Float'];
   username: Scalars['String'];
   email: Scalars['String'];
@@ -62,7 +61,7 @@ export type User = {
 export type Mutation = {
   __typename?: 'Mutation';
   vote: Scalars['Boolean'];
-  createPost: Post;
+  createPost?: Maybe<Post>;
   updatePost?: Maybe<Post>;
   deletePost: Scalars['Boolean'];
   changePassword: UserResponse;
@@ -125,7 +124,7 @@ export type PostInput = {
 export type UserResponse = {
   __typename?: 'UserResponse';
   errors?: Maybe<Array<FieldError>>;
-  user?: Maybe<User>;
+  user?: Maybe<Users>;
 };
 
 export type FieldError = {
@@ -144,8 +143,8 @@ export type PostSnippetFragment = (
   { __typename?: 'Post' }
   & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'points' | 'textSnippet' | 'voteStatus'>
   & { creator: (
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'username'>
+    { __typename?: 'Users' }
+    & Pick<Users, 'id' | 'username'>
   ) }
 );
 
@@ -155,8 +154,8 @@ export type RegularErrorFragment = (
 );
 
 export type RegularUserFragment = (
-  { __typename?: 'User' }
-  & Pick<User, 'id' | 'username'>
+  { __typename?: 'Users' }
+  & Pick<Users, 'id' | 'username'>
 );
 
 export type RegularUserResponseFragment = (
@@ -165,7 +164,7 @@ export type RegularUserResponseFragment = (
     { __typename?: 'FieldError' }
     & RegularErrorFragment
   )>>, user?: Maybe<(
-    { __typename?: 'User' }
+    { __typename?: 'Users' }
     & RegularUserFragment
   )> }
 );
@@ -191,10 +190,10 @@ export type CreatePostMutationVariables = Exact<{
 
 export type CreatePostMutation = (
   { __typename?: 'Mutation' }
-  & { createPost: (
+  & { createPost?: Maybe<(
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'text' | 'points' | 'creatorId'>
-  ) }
+  )> }
 );
 
 export type DeletePostMutationVariables = Exact<{
@@ -284,7 +283,7 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
-    { __typename?: 'User' }
+    { __typename?: 'Users' }
     & RegularUserFragment
   )> }
 );
@@ -300,8 +299,8 @@ export type PostQuery = (
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'points' | 'text' | 'voteStatus'>
     & { creator: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
+      { __typename?: 'Users' }
+      & Pick<Users, 'id' | 'username'>
     ) }
   )> }
 );
@@ -346,7 +345,7 @@ export const RegularErrorFragmentDoc = gql`
 }
     `;
 export const RegularUserFragmentDoc = gql`
-    fragment RegularUser on User {
+    fragment RegularUser on Users {
   id
   username
 }

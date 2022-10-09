@@ -5,6 +5,7 @@ import { Field, ObjectType } from 'type-graphql';
 export class PaginatedPosts {
   @Field(() => [Post])
   posts: Post[];
-  @Field()
+
+  @Field(()=>Boolean)
   hasMore: boolean;
 }

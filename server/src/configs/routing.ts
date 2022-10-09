@@ -1,13 +1,23 @@
 export default (MODE: string) => {
+
+  console.log(MODE);
   const POST = {
     v1: {
-      generalRoutes: [],
+      // generalRoutes: [{
+      //   path: "",
+      //   controller: null
+      // }],
     },
   };
 
   const GET = {
     v1: {
-      generalRoutes: [],
+      // generalRoutes: [
+      //   {
+      //     path: "",
+      //     controller: null
+      //   }
+      // ],
     },
   };
 

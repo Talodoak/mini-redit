@@ -6,6 +6,6 @@ export class PaginatedPosts {
   @Field(() => [Post])
   posts: Post[];
 
-  @Field()
+  @Field(()=>Boolean)
   hasMore: boolean;
 }
