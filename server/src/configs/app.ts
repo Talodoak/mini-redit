@@ -5,4 +5,5 @@ export const MAIN = {
     (['test', 'development', 'production'].includes(String(process.env.NODE_ENV)) &&
       String(process.env.NODE_ENV)) ||
     'development',
+  ALLOWED_ORIGINS: String(process.env.CORS_ORIGIN).split(',')
 };

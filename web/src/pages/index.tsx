@@ -69,7 +69,7 @@ const Index = () => {
                 variables: {
                   limit: variables?.limit,
                   cursor:
-                    data.posts.posts[data.posts.posts.length - 1].createdAt,
+                    data.posts.posts[data.posts.posts.length - 1].created_at,
                 },
                 // updateQuery: (
                 //   previousValue,

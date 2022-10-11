@@ -50,7 +50,7 @@ class PostRepository extends Repository<Post> {
       `
     select p.*
     from post p
-    ${cursor ? `where p."createdAt" < $2` : ''}
+    ${cursor ? `where p."created_at" < $2` : ''}
     order by p."created_at" DESC
     limit $1
     `,

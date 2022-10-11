@@ -15,9 +15,7 @@
   "scripts": {
     "dev": "tsc-watch --onSuccess \" node dist/src/\"",
     "prod": "NODE_ENV=production tsc && NODE_ENV=production node dist/app.js",
-    "doc": "typedoc --out docs src",
-    "create:migration": "typeorm migration:create",
-    "run:migration": "npx mikro-orm migration:up"
+    "doc": "typedoc --out docs src"
   },
   "devDependencies": {
     "@types/connect-redis": "^0.0.18",
@@ -58,6 +56,7 @@
     "redis": "^4.3.1",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.8.2",
+    "tsconfig-paths": "^4.1.0",
     "type-graphql": "^1.1.1",
     "uuid": "^8.3.2"
   }

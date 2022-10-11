@@ -139,9 +139,7 @@ export class UserResolver {
     let user = await UserRepository.getUserInfo({
       username: options.username,
       email: options.email,
-      password: hashedPassword,
-      created_at: new Date(),
-      updated_at: new Date()
+      password: hashedPassword
     });
 
     // store user id session

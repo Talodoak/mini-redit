@@ -45,11 +45,11 @@ export class Post extends BaseEntity {
   @OneToMany(() => Updoot, (updoot) => updoot.post)
   updoots: Updoot[];
 
-  @Field(() => String)
-  @CreateDateColumn()
-  createdAt: Date;
+  @Field(()=>String)
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+  created_at: Date;
 
-  @Field(() => String)
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @Field(()=>String)
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+  updated_at: Date;
 }

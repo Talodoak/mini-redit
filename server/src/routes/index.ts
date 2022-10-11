@@ -8,6 +8,7 @@ import { ApolloServer, ExpressContext } from 'apollo-server-express';
 import {COOKIE_NAME} from "../configs/additionals";
 import Redis from "ioredis";
 import connectRedis from 'connect-redis';
+import { MAIN } from "../configs/app";
 
 const RedisStore = connectRedis(session);
 const redisClient = new Redis('127.0.0.1:6379');
@@ -44,7 +45,7 @@ export default class InitRouter {
     this.app.set("trust proxy", 1);
     this.app.use(
         cors({
-          origin: process.env.CORS_ORIGIN,
+          origin: MAIN.ALLOWED_ORIGINS,
           credentials: true,
         })
     );

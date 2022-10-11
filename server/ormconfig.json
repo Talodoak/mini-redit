@@ -1,0 +1,17 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "qwerty",
+  "database": "mini_reddit",
+  "synchronize": false,
+  "logging": true,
+  "migrationsRun": false,
+  "entities": ["dist/src/entities/**/*{.ts,.js}"],
+  "migrations": ["dist/src/migrations/pq/**/*{.ts,.js}"],
+  "cli": {
+    "entitiesDir": "src/entities",
+    "migrationsDir": "src/migrations/pq"
+  }
+}

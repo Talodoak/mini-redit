@@ -14,7 +14,7 @@ class PostgresSQL {
         url: process.env.PQ_URL,
         logging: true,
         // synchronize: true,
-        migrations: [path.join(__dirname, './migrations/pq/*')],
+        migrations: [path.join(__dirname, '../migrations/pq/*')],
         entities: [Post, Users, Updoot],
       });
 

@@ -44,8 +44,8 @@ export type Post = {
   voteStatus?: Maybe<Scalars['Int']>;
   creatorId: Scalars['Int'];
   creator: Users;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
   textSnippet: Scalars['String'];
 };
 
@@ -54,8 +54,8 @@ export type Users = {
   id: Scalars['Float'];
   username: Scalars['String'];
   email: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
 };
 
 export type Mutation = {
@@ -141,7 +141,7 @@ export type UsernamePasswordInput = {
 
 export type PostSnippetFragment = (
   { __typename?: 'Post' }
-  & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'points' | 'textSnippet' | 'voteStatus'>
+  & Pick<Post, 'id' | 'created_at' | 'title' | 'points' | 'textSnippet' | 'voteStatus'>
   & { creator: (
     { __typename?: 'Users' }
     & Pick<Users, 'id' | 'username'>
@@ -192,7 +192,7 @@ export type CreatePostMutation = (
   { __typename?: 'Mutation' }
   & { createPost?: Maybe<(
     { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'text' | 'points' | 'creatorId'>
+    & Pick<Post, 'id' | 'title' | 'text' | 'points' | 'creatorId'>
   )> }
 );
 
@@ -297,7 +297,7 @@ export type PostQuery = (
   { __typename?: 'Query' }
   & { post?: Maybe<(
     { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'points' | 'text' | 'voteStatus'>
+    & Pick<Post, 'id' | 'created_at' | 'title' | 'points' | 'text' | 'voteStatus'>
     & { creator: (
       { __typename?: 'Users' }
       & Pick<Users, 'id' | 'username'>
@@ -326,8 +326,7 @@ export type PostsQuery = (
 export const PostSnippetFragmentDoc = gql`
     fragment PostSnippet on Post {
   id
-  createdAt
-  updatedAt
+  created_at
   title
   points
   textSnippet
@@ -398,8 +397,6 @@ export const CreatePostDocument = gql`
     mutation CreatePost($input: PostInput!) {
   createPost(input: $input) {
     id
-    createdAt
-    updatedAt
     title
     text
     points
@@ -690,8 +687,7 @@ export const PostDocument = gql`
     query Post($id: Int!) {
   post(id: $id) {
     id
-    createdAt
-    updatedAt
+    created_at
     title
     points
     text

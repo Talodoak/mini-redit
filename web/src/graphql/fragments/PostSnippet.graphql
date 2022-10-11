@@ -1,7 +1,6 @@
 fragment PostSnippet on Post {
   id
-  createdAt
-  updatedAt
+  created_at
   title
   points
   textSnippet
