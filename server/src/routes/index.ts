@@ -11,7 +11,7 @@ import connectRedis from 'connect-redis';
 import { MAIN } from "../configs/app";
 
 const RedisStore = connectRedis(session);
-const redisClient = new Redis('127.0.0.1:6379');
+const redisClient = new Redis(process.env.NODE_ENV==="production" ? process.env.REDIS_URL_PROD : process.env.REDIS_URL_DEV);
 
 export default class InitRouter {
   app: express.Application;

@@ -14,7 +14,7 @@
   },
   "scripts": {
     "dev": "tsc-watch --onSuccess \" node dist/src/\"",
-    "prod": "NODE_ENV=production tsc && NODE_ENV=production node dist/app.js",
+    "prod": "NODE_ENV=production tsc && NODE_ENV=production node dist/src/",
     "doc": "typedoc --out docs src"
   },
   "devDependencies": {

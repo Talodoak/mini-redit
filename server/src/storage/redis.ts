@@ -9,39 +9,20 @@ class RedisDb {
   private static get config(): Connections.RedisConnection {
     const mode = String(process.env.NODE_ENV);
     return {
-      host:
+      url:
         mode === 'production'
-          ? process.env.REDIS_PROD_HOST
-          : process.env.REDIS_DEV_HOST,
-      port:
-        mode === 'production'
-          ? process.env.REDIS_PROD_PORT
-          : process.env.REDIS_DEV_PORT,
-      databaseNumber:
-        mode === 'production'
-          ? process.env.REDIS_PROD_SELECTED_DB
-          : process.env.REDIS_DEV_SELECTED_DB,
-      username:
-        mode === 'production'
-          ? process.env.REDIS_PROD_USERNAME
-          : process.env.REDIS_DEV_USERNAME,
-      password:
-        mode === 'production'
-          ? process.env.REDIS_PROD_PASSWORD
-          : process.env.REDIS_DEV_PASSWORD,
+          ? process.env.REDIS_URL_PROD
+          : process.env.REDIS_URL_DEV
     };
   }
 
   async connect() {
     try {
-      const { host, port, databaseNumber } = RedisDb.config;
-      const client = createClient({
-        url: `redis://@${host}:${port}`,
-      });
+      const { url } = RedisDb.config;
+      const client = createClient({url});
       await client.connect();
-      await client.SELECT(Number(databaseNumber));
 
-      logInfo(`REDIS SERVER CONNECT. DB SELECTED: ${Number(databaseNumber)}`);
+      logInfo(`REDIS SERVER CONNECT. Url: ${url}`);
       global.redis = client as RedisClientType;
     } catch (e) {
       logError('REDIS SERVER ERROR %s', e);

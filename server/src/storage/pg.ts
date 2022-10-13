@@ -7,11 +7,23 @@ const logInfo = debug('PostgresSQL:info:::');
 const logError = debug('PostgresSQL:error:::');
 
 class PostgresSQL {
+  private static get config() {
+    const mode = String(process.env.NODE_ENV);
+    return {
+      url:
+        mode === 'production'
+          ? process.env.PQ_URL_PROD
+          : process.env.PQ_URL_DEV
+    };
+  }
+
   async connect() {
     try {
+      const { url } = PostgresSQL.config;
+
       const conn = await createConnection({
         type: 'postgres',
-        url: process.env.PQ_URL,
+        url: url,
         logging: true,
         // synchronize: true,
         migrations: [path.join(__dirname, '../migrations/pq/*')],
@@ -19,7 +31,7 @@ class PostgresSQL {
       });
 
       logInfo(
-        `Postgres databases CONNECTED. DB URL: ${process.env.PQ_URL}`,
+        `Postgres databases CONNECTED. DB URL: ${url}`,
       );
       global.pq = conn;
     } catch (e) {

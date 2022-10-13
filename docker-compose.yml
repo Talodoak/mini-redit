@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  mini-reddit-server:
+    build:
+      dockerfile: Dockerfile
+      context: "./server"
+    image: mini-reddit-server
+    ports:
+      - "4555:4555"
+    depends_on:
+      - mini-reddit-postgres
+    networks:
+      mini-reddit.net:
+    environment:
+      - NODE_ENV=production
+      - PQ_URL_PROD=postgresql://postgres:qwerty@mini-reddit-postgres:5432/mini_reddit
+      - REDIS_URL_PROD=redis://@redis:6379/1
+      - HOST=0.0.0.0
+      - CORS_ORIGIN=http://localhost:3000,https://studio.apollographql.com
+
+  nginx:
+    depends_on:
+      - mini-reddit-web
+      - mini-reddit-server
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "3050:80"
+    networks:
+      mini-reddit.net:
+
+  mini-reddit-redis:
+    restart: always
+    image: redis:latest
+    hostname: redis
+    sysctls:
+      - net.core.somaxconn=1024
+    command: [
+      "redis-server",
+      "--appendonly",
+      "yes",
+      "--maxmemory",
+      "10g",
+      "--maxmemory-policy",
+      "allkeys-lru",
+    ]
+    volumes:
+      - redis_data_mini-reddit:/data
+    networks:
+      mini-reddit.net:
+
+  mini-reddit-web:
+    stdin_open: true
+    image: mini-reddit-web
+    build:
+      dockerfile: Dockerfile
+      context: ./web
+    volumes:
+      - /app/node_modules
+      - ./web:/app
+    networks:
+      mini-reddit.net:
+
+  mini-reddit-postgres:
+    image: postgres:latest
+    restart: always
+    hostname: mini-reddit-postgres
+    volumes:
+      - pg_data_mini-reddit:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=qwerty
+    ports:
+      - "5437:5432"
+    networks:
+      mini-reddit.net:
+
+volumes:
+  pg_data_mini-reddit:
+  redis_data_mini-reddit:
+
+networks:
+  mini-reddit.net:
