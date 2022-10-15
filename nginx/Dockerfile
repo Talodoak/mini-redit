@@ -1,2 +1,2 @@
 FROM nginx
-COPY ./default.conf /etc/nginx/conf.d/default.conf
+COPY ./mini-reddit.conf /etc/nginx/conf.d/mini-reddit.conf
