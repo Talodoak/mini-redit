@@ -6,12 +6,14 @@ import session from 'express-session';
 import V1 from "./v1";
 import { ApolloServer, ExpressContext } from 'apollo-server-express';
 import {COOKIE_NAME} from "../configs/additionals";
-import Redis from "ioredis";
-import connectRedis from 'connect-redis';
+import connectRedis  from "connect-redis";
 import { MAIN } from "../configs/app";
+import { createClient } from "redis";
+import { REDIS_URL } from "../configs/storage";
 
 const RedisStore = connectRedis(session);
-const redisClient = new Redis(process.env.NODE_ENV==="production" ? process.env.REDIS_URL_PROD : process.env.REDIS_URL_DEV);
+let redisClient: any = createClient({ url: REDIS_URL, legacyMode: true })
+redisClient.connect().catch(console.error)
 
 export default class InitRouter {
   app: express.Application;

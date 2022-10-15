@@ -1,18 +1,15 @@
 import debug from 'debug';
 import { createClient, RedisClientType } from "redis";
 import { Connections } from '../interfaces';
+import { REDIS_URL } from "../configs/storage";
 
 const logInfo = debug('RedisDb:info:::');
 const logError = debug('RedisDb:error:::');
 
 class RedisDb {
   private static get config(): Connections.RedisConnection {
-    const mode = String(process.env.NODE_ENV);
     return {
-      url:
-        mode === 'production'
-          ? process.env.REDIS_URL_PROD
-          : process.env.REDIS_URL_DEV
+      url: REDIS_URL
     };
   }
 

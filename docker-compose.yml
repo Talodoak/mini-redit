@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   mini-reddit-server:
+    hostname: mini-reddit-server
     build:
       dockerfile: Dockerfile
       context: "./server"
@@ -17,7 +18,7 @@ services:
       - PQ_URL_PROD=postgresql://postgres:qwerty@mini-reddit-postgres:5432/mini_reddit
       - REDIS_URL_PROD=redis://@redis:6379/1
       - HOST=0.0.0.0
-      - CORS_ORIGIN=http://localhost:3000,https://studio.apollographql.com
+      - CORS_ORIGIN=http://mini-reddit-web:3000,http://localhost:3000,https://studio.apollographql.com
 
   nginx:
     depends_on:
@@ -49,6 +50,8 @@ services:
     ]
     volumes:
       - redis_data_mini-reddit:/data
+#    ports:
+#      - "6380:6379"
     networks:
       mini-reddit.net:
 
@@ -61,6 +64,8 @@ services:
     volumes:
       - /app/node_modules
       - ./web:/app
+    ports:
+      - "3000:3000"
     networks:
       mini-reddit.net:
 
