@@ -10,7 +10,7 @@ if (env.error) {
   console.error('PLEASE CREATE .env');
 }
 import debug from 'debug';
-import App from './app';
+import App from './app.ts';
 
 const logError = debug('Index:error:::');
 

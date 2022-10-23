@@ -94,7 +94,7 @@ export class PostResolver {
     return Post.findOne(id);
   }
 
-  @Mutation(() => Post, {nullable: true})
+  @Mutation(() => Post, { nullable: true })
   @UseMiddleware(isAuth)
   async createPost(
     @Arg('input') input: PostInput,
@@ -114,7 +114,12 @@ export class PostResolver {
     @Arg('text') text: string,
     @Ctx() { req }: MyContext,
   ): Promise<Post | null> {
-    return PostRepository.updatePost(title, text, Number(req.session.userId), id);
+    return PostRepository.updatePost(
+      title,
+      text,
+      Number(req.session.userId),
+      id,
+    );
   }
 
   @Mutation(() => Boolean)
@@ -123,7 +128,11 @@ export class PostResolver {
     @Arg('id', () => Int) id: number,
     @Ctx() { req }: MyContext,
   ): Promise<boolean> {
-    const result = await PostRepository.deletePost(id, Number(req.session.userId));
+    const result = await PostRepository.deletePost(
+      id,
+      Number(req.session.userId),
+    );
+    console.log(result);
     return true;
   }
 }

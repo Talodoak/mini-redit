@@ -13,7 +13,7 @@ class PostgresSQL {
       url:
         mode === 'production'
           ? process.env.PQ_URL_PROD
-          : process.env.PQ_URL_DEV
+          : process.env.PQ_URL_DEV,
     };
   }
 
@@ -30,9 +30,7 @@ class PostgresSQL {
         entities: [Post, Users, Updoot],
       });
 
-      logInfo(
-        `Postgres databases CONNECTED. DB URL: ${url}`,
-      );
+      logInfo(`Postgres databases CONNECTED. DB URL: ${url}`);
       global.pq = conn;
     } catch (e) {
       logError('Postgres databases CONNECTED ERROR %s', e);

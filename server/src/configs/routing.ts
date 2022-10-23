@@ -1,5 +1,4 @@
 export default (MODE: string) => {
-
   console.log(MODE);
   const POST = {
     v1: {

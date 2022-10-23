@@ -5,17 +5,20 @@ import {
   Mutation,
   Query,
   Resolver,
-  Root
-} from "type-graphql";
-import argon2 from "argon2";
-import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../../configs/additionals";
-import { UsernamePasswordInput } from "./username.password.input";
-import { Mailer, Validator } from "../../services";
-import { v4 } from "uuid";
-import { UserResponse } from "./create-user.dto";
-import { MyContext } from "../../interfaces";
-import { Users } from "../../enteties";
-import { UserRepository } from "../../respository";
+  Root,
+} from 'type-graphql';
+import argon2 from 'argon2';
+import {
+  COOKIE_NAME,
+  FORGET_PASSWORD_PREFIX,
+} from '../../configs/additionals.ts';
+import { UsernamePasswordInput } from './username.password.input';
+import { Mailer, Validator } from '../../services';
+import { v4 } from 'uuid';
+import { UserResponse } from './create-user.dto';
+import { MyContext } from '../../interfaces';
+import { Users } from '../../enteties';
+import { UserRepository } from '../../respository';
 
 @Resolver(Users)
 export class UserResolver {
@@ -26,23 +29,23 @@ export class UserResolver {
       return user.email;
     }
     // current user wants to see someone elses email
-    return "";
+    return '';
   }
 
   @Mutation(() => UserResponse)
   async changePassword(
-    @Arg("token") token: string,
-    @Arg("newPassword") newPassword: string,
-    @Ctx() { redis, req }: MyContext
+    @Arg('token') token: string,
+    @Arg('newPassword') newPassword: string,
+    @Ctx() { redis, req }: MyContext,
   ): Promise<UserResponse> {
     if (newPassword.length <= 2) {
       return {
         errors: [
           {
-            field: "newPassword",
-            message: "length must be greater than 2"
-          }
-        ]
+            field: 'newPassword',
+            message: 'length must be greater than 2',
+          },
+        ],
       };
     }
 
@@ -52,10 +55,10 @@ export class UserResolver {
       return {
         errors: [
           {
-            field: "token",
-            message: "token expired"
-          }
-        ]
+            field: 'token',
+            message: 'token expired',
+          },
+        ],
       };
     }
 
@@ -66,10 +69,10 @@ export class UserResolver {
       return {
         errors: [
           {
-            field: "token",
-            message: "user no longer exists"
-          }
-        ]
+            field: 'token',
+            message: 'user no longer exists',
+          },
+        ],
       };
     }
 
@@ -86,8 +89,8 @@ export class UserResolver {
 
   @Mutation(() => Boolean)
   async forgotPassword(
-    @Arg("email") email: string,
-    @Ctx() { redis }: MyContext
+    @Arg('email') email: string,
+    @Ctx() { redis }: MyContext,
   ) {
     const user = await UserRepository.getUser({ where: { email } });
     if (!user) {
@@ -100,13 +103,13 @@ export class UserResolver {
     await redis.set(
       FORGET_PASSWORD_PREFIX + token,
       user.id,
-      "ex",
-      1000 * 60 * 60 * 24 * 3
+      'ex',
+      1000 * 60 * 60 * 24 * 3,
     ); // 3 days
 
     await Mailer.sendEmail(
       email,
-      `<a href="http://localhost:3000/change-password/${token}">reset password</a>`
+      `<a href="http://localhost:3000/change-password/${token}">reset password</a>`,
     );
 
     return true;
@@ -124,8 +127,8 @@ export class UserResolver {
 
   @Mutation(() => UserResponse)
   async register(
-    @Arg("options") options: UsernamePasswordInput,
-    @Ctx() { req }: MyContext
+    @Arg('options') options: UsernamePasswordInput,
+    @Ctx() { req }: MyContext,
   ): Promise<UserResponse> {
     const errors = Validator.register(options);
     if (errors) {
@@ -136,10 +139,10 @@ export class UserResolver {
 
     console.log(options);
 
-    let user = await UserRepository.getUserInfo({
+    const user = await UserRepository.getUserInfo({
       username: options.username,
       email: options.email,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     // store user id session
@@ -152,23 +155,23 @@ export class UserResolver {
 
   @Mutation(() => UserResponse)
   async login(
-    @Arg("usernameOrEmail") usernameOrEmail: string,
-    @Arg("password") password: string,
-    @Ctx() { req }: MyContext
+    @Arg('usernameOrEmail') usernameOrEmail: string,
+    @Arg('password') password: string,
+    @Ctx() { req }: MyContext,
   ): Promise<UserResponse> {
     const user = await Users.findOne(
-      usernameOrEmail.includes("@")
+      usernameOrEmail.includes('@')
         ? { where: { email: usernameOrEmail } }
-        : { where: { username: usernameOrEmail } }
+        : { where: { username: usernameOrEmail } },
     );
     if (!user) {
       return {
         errors: [
           {
-            field: "usernameOrEmail",
-            message: "that username doesn't exist"
-          }
-        ]
+            field: 'usernameOrEmail',
+            message: "that username doesn't exist",
+          },
+        ],
       };
     }
     const valid = await argon2.verify(user.password, password);
@@ -176,17 +179,17 @@ export class UserResolver {
       return {
         errors: [
           {
-            field: "password",
-            message: "incorrect password"
-          }
-        ]
+            field: 'password',
+            message: 'incorrect password',
+          },
+        ],
       };
     }
 
     req.session.userId = user.id;
 
     return {
-      user
+      user,
     };
   }
 
@@ -202,7 +205,7 @@ export class UserResolver {
         }
 
         resolve(true);
-      })
+      }),
     );
   }
 }

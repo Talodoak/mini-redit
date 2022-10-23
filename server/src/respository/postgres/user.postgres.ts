@@ -2,11 +2,11 @@ import { getConnection, Repository } from 'typeorm';
 import { Users } from '../../enteties';
 
 class UserRepository extends Repository<Users> {
-  async getUser(userInfo:any): Promise<Users> {
+  async getUser(userInfo: any): Promise<Users> {
     return await Users.findOne(userInfo);
   }
 
-  async getUserInfo(values:any) {
+  async getUserInfo(values: any) {
     try {
       const result = await getConnection()
         .createQueryBuilder()

@@ -1,3 +1,3 @@
-import { isAuth } from './isAuth';
+import { isAuth } from './isAuth.ts';
 
-export {isAuth}
+export { isAuth };

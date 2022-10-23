@@ -14,8 +14,6 @@ import { buildSchema } from 'type-graphql';
 import { MyContext } from './interfaces';
 import { PostResolver, UserResolver } from './controllers';
 import { Loaders } from './services';
-import {Request, Response} from 'express'
-import { SessionData } from "express-session";
 
 const logInfo = debug('Server:info:::');
 const logError = debug('Server:error:::');
@@ -35,7 +33,9 @@ class App {
 
   private server: Server;
 
-  private apolloServer: ApolloServer<import("apollo-server-express").ExpressContext>;
+  private apolloServer: ApolloServer<
+    import('apollo-server-express').ExpressContext
+  >;
 
   constructor() {
     this.PORT = AppMainConfig.APP_PORT;

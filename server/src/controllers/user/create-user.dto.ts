@@ -1,12 +1,12 @@
-import { Users } from "../../enteties/user.enteties";
-import {Field, ObjectType} from "type-graphql";
+import { Users } from '../../enteties/user.enteties';
+import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()
 export class FieldError {
-  @Field(()=>String)
+  @Field(() => String)
   field: string;
 
-  @Field(()=>String)
+  @Field(() => String)
   message: string;
 }
 

@@ -1,10 +1,10 @@
 import express from 'express';
-import getRequests from '../../configs/routing';
+// import getRequests from '../../configs/routing.ts';
 
 export default (MODE: string) => {
   const apiRouter = express.Router();
 
-  const REQUESTS = getRequests(MODE);
+  // const REQUESTS = getRequests(MODE);
 
   /**
    * GET

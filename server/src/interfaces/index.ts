@@ -1,4 +1,4 @@
-import { MyContext } from './context';
-import * as Connections from './connections';
+import { MyContext } from './context.ts';
+import * as Connections from './connections.ts';
 
 export { MyContext, Connections };

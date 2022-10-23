@@ -1,4 +1,4 @@
-import Redis from './redis';
-import PqSQL from './pg';
+import Redis from './redis.ts';
+import PqSQL from './pg.ts';
 
 export { Redis, PqSQL };

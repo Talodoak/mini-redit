@@ -2,9 +2,9 @@ import { Field, InputType } from 'type-graphql';
 
 @InputType()
 export class PostInput {
-  @Field(()=> String)
+  @Field(() => String)
   title: string;
 
-  @Field(()=>String)
+  @Field(() => String)
   text: string;
 }
