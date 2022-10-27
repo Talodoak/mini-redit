@@ -16,8 +16,15 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\" --fix",
     "tests:dev": "jest ",
     "tests": "jest --watchAll --testPathPattern=tests --coverage --runInBand",
-    "tests:ci": "jest --watchman --testPathPattern=tests",
-    "prepare": "cd .. && husky install server/.husky"
+    "tests:ci": "jest --watchman --testPathPattern=tests"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{ts}":  [ "eslint . --fix", "prettier --write", "git add" ]
   },
   "devDependencies": {
     "@types/connect-redis": "^0.0.18",
@@ -59,6 +66,7 @@
     "express-graphql": "^0.12.0",
     "express-session": "^1.17.3",
     "graphql": "^15.3.0",
+    "lint-staged": "^13.0.3",
     "nodemailer": "^6.7.7",
     "pg": "^8.7.3",
     "redis": "^4.3.1",
