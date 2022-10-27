@@ -24,7 +24,9 @@
     }
   },
   "lint-staged": {
-    "**/*.{ts}":  [ "eslint . --fix", "prettier --write", "git add" ]
+    "src/**/*.{ts,tsx}": [
+      "yarn lint --fix"
+    ]
   },
   "devDependencies": {
     "@types/connect-redis": "^0.0.18",
