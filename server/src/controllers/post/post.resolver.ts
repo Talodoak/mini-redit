@@ -129,7 +129,8 @@ export class PostResolver {
     @Ctx() { req }: MyContext,
   ): Promise<boolean> {
     const result = await PostRepository.deletePost(
-      id, Number(req.session.userId),
+      id,
+      Number(req.session.userId),
     );
     console.log(result);
     return true;

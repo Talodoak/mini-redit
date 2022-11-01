@@ -16,18 +16,8 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\" --fix",
     "tests:dev": "jest ",
     "tests": "jest --watchAll --testPathPattern=tests --coverage --runInBand",
-    "tests:ci": "jest --watchman --testPathPattern=tests"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run test:co",
-      "pre-push": "npm run tests:ci"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "yarn lint --fix"
-    ]
+    "tests:ci": "jest --watchman --testPathPattern=tests",
+    "prepare": "cd .. && husky install server/.husky"
   },
   "devDependencies": {
     "@types/connect-redis": "^0.0.18",
