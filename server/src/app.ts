@@ -16,6 +16,7 @@ import { PostResolver, UserResolver } from './controllers';
 import { Loaders } from './services';
 
 const logInfo = debug('Server:info:::');
+
 const logError = debug('Server:error:::');
 
 /**

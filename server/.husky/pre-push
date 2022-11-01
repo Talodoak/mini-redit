@@ -1,11 +1,12 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-IS_CHANGES_FROM_FRONTEND=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'web/')
+IS_CHANGES_FROM_SERVER=$(git diff --stat | grep 'server')
 
-if [ "$IS_CHANGES_FROM_FRONTEND" ]; then
-  echo 'Ignoring pre commit changes for frontend'
+if [ "$IS_CHANGES_FROM_SERVER" ];
+then
+  cd server && npm run tests:ci
+else
+  echo 'Ignoring pre commit changes'
   exit 0
 fi
-
-cd server && npm run tests:ci

@@ -1,9 +1,7 @@
 import express from 'express';
 // import getRequests from '../../configs/routing.ts';
 
-export default (MODE: string) => {
-  const apiRouter = express.Router();
-
+export default () => {
   // const REQUESTS = getRequests(MODE);
 
   /**
@@ -20,5 +18,5 @@ export default (MODE: string) => {
   //   apiRouter.post(request.path, request.controller);
   // }
 
-  return apiRouter;
+  return express.Router();
 };
