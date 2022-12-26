@@ -4,7 +4,7 @@ COPY package.json yarn.lock ./
 RUN yarn install
 
 FROM node:16-alpine3.11 as builder
-COPY . .
+COPY web .
 COPY --from=dependencies /node_modules ./node_modules
 RUN yarn build:production
 
